@@ -8,22 +8,39 @@ var backend = new Backend();
 // wyświetlamy ekran powitalny
 Frontend.PokazEkranPowitalny();
 
-// wylosowanie pytania z najniższej kategorii
-backend.WylosujPytanieZDanejKategorii();
-
-// wyświetlenie pytania i pobranie odpowiedzi gracza
-var odpowiedzGracza = Frontend.WyswietlPytanieIDajOdpowiedzGracza(backend.AktualnePytanie);
-
-// walidacja odpowiedzi gracza
-var czyGraczOdpowiedzialPoprawnie = backend.CzyGraczOdpowiedzialPoprawnie(odpowiedzGracza);
-
-if (czyGraczOdpowiedzialPoprawnie)
+while (true)
 {
-    Console.WriteLine(" HURRA !!!!");
+    // wylosowanie pytania z najniższej kategorii
+    backend.WylosujPytanieZDanejKategorii();
+
+    // wyświetlenie pytania i pobranie odpowiedzi gracza
+    var odpowiedzGracza = Frontend.WyswietlPytanieIDajOdpowiedzGracza(backend.AktualnePytanie);
+
+    // walidacja odpowiedzi gracza
+    var czyGraczOdpowiedzialPoprawnie = backend.CzyGraczOdpowiedzialPoprawnie(odpowiedzGracza);
+
+    if (czyGraczOdpowiedzialPoprawnie)
+    {
+        // ustalić czy to była ostatnia kategoria
+        if (backend.CzyOstatniaKategoria())
+        {
+            Frontend.Wygrana();
+            break;
+        }
+        else
+        {
+            Frontend.OdpowiedzOk(backend.AktualnaKategoria);
+            // podnieść kategorię na nastepną
+            backend.PoniesKategorie();
+        }
+    }
+    else
+    {
+        Frontend.KoniecGry();
+        break;
+    }
 }
-else
-{
-    Console.WriteLine(" BŁAD !!!!");
-}
+
+
 
 Console.ReadLine();
