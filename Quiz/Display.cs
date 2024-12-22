@@ -1,6 +1,8 @@
-﻿namespace Quiz
+﻿using QuizLogic.Models;
+
+namespace Quiz
 {
-    public static class Frontend
+    public static class Display
     {
         static List<string> akceptowalneKlawisze = ["1", "2", "3", "4"];
 

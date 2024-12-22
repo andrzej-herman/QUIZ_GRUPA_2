@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Quiz
+namespace QuizLogic.Models
 {
     public class Odpowiedz
     {

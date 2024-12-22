@@ -1,35 +1,41 @@
-﻿using System.Text.Json;
+﻿using QuizLogic.Models;
+using System.Text.Json;
 
-namespace Quiz
+namespace QuizLogic
 {
-    public class Backend
+    public class Game
     {
         Random _random;
+        int _aktualnyIndex;
+        List<int> _kategorie;
+        List<Pytanie> _questions;
 
-        public Backend()
+        public Game()
         {
             _random = new Random();
             UtworzBazePytan();
-            Kategorie = BazaPytan.Select(x => x.Kategoria).Distinct().OrderBy(p => p).ToList();
-            AktualnaKategoria = Kategorie[AktualnyIndex];
+            UtworzKategorie();
         }
 
-        public int AktualnyIndex { get; set; }
-        public List<int> Kategorie { get; set; }
-        public List<Pytanie>? BazaPytan { get; set; }
         public int AktualnaKategoria { get; set; }
         public Pytanie AktualnePytanie { get; set; }
 
-        public void UtworzBazePytan()
+        private void UtworzKategorie()
+        {
+            _kategorie = _questions.Select(x => x.Kategoria).Distinct().OrderBy(p => p).ToList();
+            AktualnaKategoria = _kategorie[_aktualnyIndex];
+        }
+
+        private void UtworzBazePytan()
         {
             var sciezka = $"{Directory.GetCurrentDirectory()}\\questions_pl.json";
             var json = File.ReadAllText(sciezka);
-            BazaPytan = JsonSerializer.Deserialize<List<Pytanie>>(json);          
+            _questions = JsonSerializer.Deserialize<List<Pytanie>>(json);          
         }
 
         public void WylosujPytanieZDanejKategorii()
         {
-            var dobrePytania = BazaPytan.Where(x => x.Kategoria == AktualnaKategoria).ToList();
+            var dobrePytania = _questions.Where(x => x.Kategoria == AktualnaKategoria).ToList();
             var number = _random.Next(0, dobrePytania.Count);
             var pytanie = dobrePytania[number];
             pytanie.Odpowiedzi = pytanie.Odpowiedzi.OrderBy(p => _random.Next()).ToList();
@@ -52,14 +58,14 @@ namespace Quiz
 
         public bool CzyOstatniaKategoria()
         {
-            var maxIndex = Kategorie.Count - 1;
-            return AktualnyIndex == maxIndex;     
+            var maxIndex = _kategorie.Count - 1;
+            return _aktualnyIndex == maxIndex;     
         }
 
         public void PoniesKategorie()
         {
-            AktualnyIndex++;
-            AktualnaKategoria = Kategorie[AktualnyIndex];
+            _aktualnyIndex++;
+            AktualnaKategoria = _kategorie[_aktualnyIndex];
         }
     }
 }

@@ -1,42 +1,43 @@
 ﻿using Quiz;
+using QuizLogic;
 
 // powołujemy do życia obiekt klasy Backend w którym będzie logika gry
 // stworzenie bazy pytań  i ustawienie kategorii na pierwszą
 // jest w konstruktorze klasy Backend
-var backend = new Backend();
+var game = new Game();
 
 // wyświetlamy ekran powitalny
-Frontend.PokazEkranPowitalny();
+Display.PokazEkranPowitalny();
 
 while (true)
 {
     // wylosowanie pytania z najniższej kategorii
-    backend.WylosujPytanieZDanejKategorii();
+    game.WylosujPytanieZDanejKategorii();
 
     // wyświetlenie pytania i pobranie odpowiedzi gracza
-    var odpowiedzGracza = Frontend.WyswietlPytanieIDajOdpowiedzGracza(backend.AktualnePytanie);
+    var odpowiedzGracza = Display.WyswietlPytanieIDajOdpowiedzGracza(game.AktualnePytanie);
 
     // walidacja odpowiedzi gracza
-    var czyGraczOdpowiedzialPoprawnie = backend.CzyGraczOdpowiedzialPoprawnie(odpowiedzGracza);
+    var czyGraczOdpowiedzialPoprawnie = game.CzyGraczOdpowiedzialPoprawnie(odpowiedzGracza);
 
     if (czyGraczOdpowiedzialPoprawnie)
     {
         // ustalić czy to była ostatnia kategoria
-        if (backend.CzyOstatniaKategoria())
+        if (game.CzyOstatniaKategoria())
         {
-            Frontend.Wygrana();
+            Display.Wygrana();
             break;
         }
         else
         {
-            Frontend.OdpowiedzOk(backend.AktualnaKategoria);
+            Display.OdpowiedzOk(game.AktualnaKategoria);
             // podnieść kategorię na nastepną
-            backend.PoniesKategorie();
+            game.PoniesKategorie();
         }
     }
     else
     {
-        Frontend.KoniecGry();
+        Display.KoniecGry();
         break;
     }
 }

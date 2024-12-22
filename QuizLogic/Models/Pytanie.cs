@@ -1,4 +1,4 @@
-﻿namespace Quiz
+﻿namespace QuizLogic.Models
 {
     public class Pytanie
     {
